@@ -20,7 +20,7 @@ router.post('/items', function(req, res) {
 
 router.put('/items/:id', function(req, res) {
     Item.update( req.params.id, req.body.name, function(item) {
-        res.json(item);
+        res.status(201).json(item);
     }, function(err) {
         res.status(400).json(err);
     });
