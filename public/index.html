@@ -81,13 +81,13 @@ div.delete {
         <script>
 var ShoppingList = function() {
     this.items = [];
-    this.itemList = $('#item-list');
-    this.itemListTemplate = Handlebars.compile($("#item-list-template").html());
+    this.itemList = jQuery('#item-list');
+    this.itemListTemplate = Handlebars.compile(jQuery("#item-list-template").html());
 
-    this.input = $('#item-input');
+    this.input = jQuery('#item-input');
     this.input.keydown(this.onAddInputKeydown.bind(this));
 
-    this.main = $('#main');
+    this.main = jQuery('#main');
     this.main.on('dblclick', 'li',
                  this.onEditItemClicked.bind(this));
     this.main.on('keydown', 'li input',
@@ -105,7 +105,7 @@ ShoppingList.prototype.onAddInputKeydown = function(event) {
         return;
     }
 
-    var input = $(event.target);
+    var input = jQuery(event.target);
     var value = input.val().trim();
     if (value != '') {
         this.addItem(value);
@@ -115,7 +115,7 @@ ShoppingList.prototype.onAddInputKeydown = function(event) {
 };
 
 ShoppingList.prototype.onEditItemClicked = function(event) {
-    var item = $(event.target).parents('li');
+    var item = jQuery(event.target).parents('li');
     var display = item.children('.display');
     var input = item.children('input');
     var name = display.children('.name');
@@ -130,12 +130,12 @@ ShoppingList.prototype.onEditInputKeydown = function(event) {
     if (event.which != 13) {
         return;
     }
-    var input = $(event.target);
+    var input = jQuery(event.target);
     input.blur();
 };
 
 ShoppingList.prototype.onEditFocusOut = function(event) {
-    var item = $(event.target).parents('li');
+    var item = jQuery(event.target).parents('li');
     var id = item.data('id');
     var display = item.children('.display');
     var input = item.children('input');
@@ -153,12 +153,12 @@ ShoppingList.prototype.onEditFocusOut = function(event) {
 };
 
 ShoppingList.prototype.onDeleteItemClicked = function(event) {
-    var id = $(event.target).parents('li').data('id');
+    var id = jQuery(event.target).parents('li').data('id');
     this.deleteItem(id);
 };
 
 ShoppingList.prototype.getItems = function() {
-    var ajax = $.ajax('/items', {
+    var ajax = jQuery.ajax('/items', {
         type: 'GET',
         dataType: 'json'
     });
@@ -167,7 +167,7 @@ ShoppingList.prototype.getItems = function() {
 
 ShoppingList.prototype.addItem = function(name) {
     var item = {'name': name};
-    var ajax = $.ajax('/items', {
+    var ajax = jQuery.ajax('/items', {
         type: 'POST',
         data: JSON.stringify(item),
         dataType: 'json',
@@ -177,7 +177,7 @@ ShoppingList.prototype.addItem = function(name) {
 };
 
 ShoppingList.prototype.deleteItem = function(id) {
-    var ajax = $.ajax('/items/' + id, {
+    var ajax = jQuery.ajax('/items/' + id, {
         type: 'DELETE',
         dataType: 'json'
     });
@@ -186,7 +186,7 @@ ShoppingList.prototype.deleteItem = function(id) {
 
 ShoppingList.prototype.editItem = function(id, name) {
     var item = {'name': name, 'id': id};
-    var ajax = $.ajax('/items/' + id, {
+    var ajax = jQuery.ajax('/items/' + id, {
         type: 'PUT',
         data: JSON.stringify(item),
         dataType: 'json',
@@ -205,12 +205,12 @@ ShoppingList.prototype.updateItemsView = function() {
         items: this.items
     };
 
-    var itemList = $(this.itemListTemplate(context));
+    var itemList = jQuery(this.itemListTemplate(context));
     this.itemList.replaceWith(itemList);
     this.itemList = itemList;
 };
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
     var app = new ShoppingList();
 });
         </script>
@@ -229,7 +229,7 @@ $(document).ready(function() {
         <script id="item-list-template" type="text/x-handlebars-template">
             <ul id="item-list">
                 {{#each items}}
-                <li data-id="{{ id }}">
+                <li data-id="{{ _id }}">
                     <div class="display">
                         <span class="name">{{name}}</span>
                         <div class="delete">
